@@ -14,4 +14,6 @@ Then open http://localhost:8000/.
 
 ## Deploy
 
-Pushing to this branch runs `.github/workflows/pages.yml`, which publishes the site to GitHub Pages.
+In the repository settings, open **Pages** and set the source to **Deploy from a branch**, choosing this branch and the `/ (root)` folder. GitHub then publishes the site at `https://benjamingjoel2.github.io/new/`.
+
+If the source is set to **GitHub Actions** instead, run the manual workflow in `.github/workflows/pages.yml`.

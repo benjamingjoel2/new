@@ -1,8 +1,9 @@
 name: Deploy to GitHub Pages
 
+# Manual trigger only. Use this if the repo's Pages source is set to
+# "GitHub Actions". If the source is "Deploy from a branch", GitHub
+# publishes the branch directly and this workflow is not needed.
 on:
-  push:
-    branches: ["claude/dazzling-sagan-t07wfp", "main"]
   workflow_dispatch:
 
 permissions:
@@ -25,8 +26,6 @@ jobs:
         uses: actions/checkout@v4
       - name: Setup Pages
         uses: actions/configure-pages@v5
-        with:
-          enablement: true
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
