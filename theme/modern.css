@@ -213,3 +213,12 @@ body:not(.header--menu-open) .header .header-announcement-bar-wrapper [data-head
   body:not(.header--menu-open) .header .header-announcement-bar-wrapper .header-background-gradient,
   body:not(.header--menu-open) .header .header-announcement-bar-wrapper .header-background-solid{opacity:.85}
 }
+
+/* ---------- Inquiry pages (Easol markup) ---------- */
+.enquiry-form__submit-input,.btn--solid,.button,.navigation__cta,.navigation__cta a,.btn-add-time{border-radius:var(--pc-pill) !important;transition:transform .22s var(--pc-ease),box-shadow .22s var(--pc-ease),opacity .22s var(--pc-ease)}
+.enquiry-form__submit-input{padding-left:2em !important;padding-right:2em !important}
+.enquiry-form__submit-input:hover,.btn--solid:hover{transform:translateY(-1px);box-shadow:var(--pc-shadow-2)}
+input.enquiry-form__input,select.enquiry-form__input{border-radius:var(--pc-pill) !important;padding-left:1.1em !important;padding-right:1.1em !important}
+textarea.enquiry-form__input{border-radius:var(--pc-radius-md) !important;padding:1em 1.1em !important}
+.enquiry-form__input:focus{outline:none !important;box-shadow:var(--pc-ring)}
+.footer__currency .custom-select,.currency-switcher select{border-radius:var(--pc-pill) !important;padding-left:1em !important}
