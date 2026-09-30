@@ -12,7 +12,7 @@
     if (!indexPromise) {
       indexPromise = fetch(INDEX_URL).then(function (r) { return r.json(); }).then(function (rows) {
         rows.forEach(function (e) {
-          e._n = norm(e.n); e._t = norm(e.t); e._d = norm(e.d); e._h = norm(e.h || ''); e._x = norm(e.x || ''); e._s = norm(e.s);
+          e._n = norm(e.n); e._t = norm(e.t); e._d = norm(e.d); e._h = norm(e.h || ''); e._x = norm(e.x || ''); e._s = norm(e.s); e._k = (e.k || []).map(norm);
         });
         return rows;
       }).catch(function () { return []; });
@@ -38,6 +38,13 @@
       var e = rows[i];
       if (filter && !filter(e)) continue;
       var score = 0;
+      e._km = '';
+      for (var ki = 0; ki < e._k.length; ki++) {
+        var kw = e._k[ki];
+        if (kw === q) { score += 90; e._km = e.k[ki]; break; }
+        if (q.length >= 2 && kw.indexOf(q) === 0) { if (score < 55) { score += 55; e._km = e.k[ki]; } }
+        else if (q.length >= 3 && kw.indexOf(q) >= 0 && !e._km) { score += 30; e._km = e.k[ki]; }
+      }
       if (e._n === q || e._t === q) score += 100;
       if (e._n.indexOf(q) === 0 || e._t.indexOf(q) === 0) score += 60;
       if (e._n.indexOf(q) >= 0) score += 40;
@@ -51,6 +58,7 @@
         else if (e._h.indexOf(w) >= 0) hit = 9;
         else if (e._d.indexOf(w) >= 0) hit = 7;
         else if (e._x.indexOf(w) >= 0) hit = 3;
+        if (!hit) for (var kj = 0; kj < e._k.length; kj++) if (e._k[kj].indexOf(w) >= 0) { hit = 16; if (!e._km) e._km = e.k[kj]; break; }
         if (!hit) { all = false; break; }
         score += hit;
       }
@@ -70,15 +78,25 @@
   }
   function esc(s) { return String(s || '').replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
   function thumb(e) {
+    if (e.g) return '<span class="persocal-search__thumb persocal-search__grad" aria-hidden="true" style="background:linear-gradient(120deg, ' + esc(e.g[1]) + ' 0%, ' + esc(e.g[0]) + ' 100%)"></span>';
     if (e.i) return '<img class="persocal-search__thumb" src="' + esc(ROOT + ASSETS + '/' + e.i) + '?format=300w" alt="" loading="lazy">';
     return '<span class="persocal-search__thumb persocal-search__thumb--empty" aria-hidden="true">' + esc((e.n || '?').charAt(0)) + '</span>';
   }
+  function kindLabel(e) { return e.s === 'Destination' ? 'Country' : e.s; }
   function resultHTML(e, cls) {
-    return '<a class="' + cls + '" href="' + esc(href(e)) + '">' + thumb(e) + '<span><span class="persocal-search__kind">' + esc(e.s) + '</span><span class="persocal-search__name">' + esc(e.n && e.s !== 'Page' && e.s !== 'Home' ? e.n : e.t) + '</span><span class="persocal-search__desc">' + esc(e.d || e.t) + '</span></span></a>';
+    var desc = e._km ? e._km + ' \u00b7 ' + e.n : (e.d || e.t);
+    return '<a class="' + cls + '" href="' + esc(href(e)) + '">' + thumb(e) + '<span><span class="persocal-search__kind">' + esc(kindLabel(e)) + '</span><span class="persocal-search__name">' + esc(e.n && e.s !== 'Page' && e.s !== 'Home' ? e.n : e.t) + '</span><span class="persocal-search__desc">' + esc(desc) + '</span></span></a>';
   }
+  /* Destinations page: countries and regions only */
+  function isCountry(e) { return e.s === 'Destination' && /^destinations\/[^\/]+\/$/.test(e.u); }
+  function isRegion(e) { return e.s === 'Region' && e.u !== 'destination/'; }
+  var SCOPES = {
+    destinations: { filter: function (e) { return isCountry(e) || isRegion(e); }, empty: 'No country or region matches “%s”. Try a country, a city or a continent.' }
+  };
 
   /* ---- Home page search band ---- */
   function initHomeSearch(root) {
+    var scope = SCOPES[root.getAttribute('data-scope')] || {};
     var input = root.querySelector('.persocal-search__input');
     var list = root.querySelector('.persocal-search__results');
     var button = root.querySelector('.persocal-search__button');
@@ -86,13 +104,13 @@
     function render(results, query) {
       current = results; active = -1;
       if (!query) { list.hidden = true; list.innerHTML = ''; return; }
-      if (!results.length) { list.innerHTML = '<li class="persocal-search__empty">Nothing found for “' + esc(query) + '”. Try a country, a park, an interest like golf or safari, or a story from the newsroom.</li>'; list.hidden = false; return; }
+      if (!results.length) { list.innerHTML = '<li class="persocal-search__empty">' + (scope.empty ? esc(scope.empty).replace('%s', esc(query)) : 'Nothing found for “' + esc(query) + '”. Try a country, a park, an interest like golf or safari, or a story from the newsroom.') + '</li>'; list.hidden = false; return; }
       list.innerHTML = results.map(function (e) { return '<li class="persocal-search__result">' + resultHTML(e, '') + '</li>'; }).join('');
       list.hidden = false;
     }
     function run() {
       var q = input.value.trim();
-      loadIndex().then(function (rows) { if (input.value.trim() === q) render(search(rows, q), q); });
+      loadIndex().then(function (rows) { if (input.value.trim() === q) render(search(rows, q, scope.filter), q); });
     }
     var timer;
     input.addEventListener('input', function () { clearTimeout(timer); timer = setTimeout(run, 120); });

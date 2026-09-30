@@ -1997,6 +1997,42 @@ button:focus {
 
 
 <script src="../config.js"></script>
+<style id="persocal-local-style">
+  html.is-embedded nav.navigation, html.is-embedded footer.footer, html.is-embedded .responsive-modal { display: none !important; }
+  html.is-embedded body { padding-top: 0 !important; }
+  html.is-embedded .enquiry__container-inner { width: 100% !important; max-width: 720px; }
+  html.is-embedded .enquiry__container { padding-top: 40px !important; padding-bottom: 40px !important; }
+  html.is-embedded .enquiry__form-header__heading { font-size: clamp(1.5rem, 3.2vw, 2.1rem) !important; line-height: 1.1 !important; }
+  html.is-embedded .enquiry__form-header { padding-top: 24px !important; }
+  html.is-embedded { font-size: 16px !important; }
+  html.is-embedded section.enquiry { padding-top: 0 !important; }
+  html.is-embedded .enquiry__container-inner { padding-top: 16px !important; }
+  html.is-embedded .enquiry__container { padding-top: 32px !important; }
+  html.is-embedded, html.is-embedded body, html.is-embedded main, html.is-embedded .enquiry, html.is-embedded .enquiry__container { background: transparent !important; }
+</style>
+<script>
+(function () {
+  var params = new URLSearchParams(location.search);
+  if (params.get('embed') === '1') document.documentElement.classList.add('is-embedded');
+  var to = (params.get('to') || '').trim().slice(0, 60);
+  if (!to) return;
+  document.body.setAttribute('data-inquiry-to', to);
+  var heading = document.querySelector('.enquiry__form-header__heading');
+  if (heading) heading.textContent = 'Contact a Persocal Trip Designer in ' + to;
+  document.title = 'Persocal ' + to + ' | Inquiry';
+  document.querySelectorAll('label.enquiry-form__label').forEach(function (label) {
+    if (!/where do you want to go/i.test(label.textContent)) return;
+    var field = document.getElementById(label.getAttribute('for'));
+    if (field && !field.value) field.value = to;
+  });
+  document.querySelectorAll('label.enquiry-form__label').forEach(function (label) {
+    if (!/tell us more/i.test(label.textContent)) return;
+    var field = document.getElementById(label.getAttribute('for'));
+    if (field) field.placeholder = 'What are you looking forward to doing in ' + to + '?';
+  });
+})();
+</script>
+
 <script>
 (function () {
   var form = document.querySelector('form[data-persocal-inquiry]');
@@ -2045,6 +2081,7 @@ button:focus {
     var name = (first + ' ' + last).trim();
     if (about && (about.length > 40 || about.split(/\s+/).length > 6)) { notes = notes ? about + ' ' + notes : about; about = ''; }
     var topicName = topic === 'general' ? '' : topic.replace(/-/g, ' ').replace(/\b\w/g, function (c) { return c.toUpperCase(); });
+    if (!topicName && document.body.getAttribute('data-inquiry-to')) topicName = document.body.getAttribute('data-inquiry-to');
     var lines = ['Hi Persocal, I\'d like to plan a trip' + (topicName ? ' (' + topicName + ')' : '') + '.', ''];
     var core = [];
     if (about) core.push('interested in *' + about + '*');

@@ -36,3 +36,15 @@
 .sqs-search-preview-ui.persocal-preview .persocal-search__desc{opacity:.75}
 .sqs-search-preview-ui.persocal-preview .search-result-notice{padding:14px 16px;font-size:.85rem;color:#555}
 .sqs-search-preview-ui.persocal-preview .persocal-search__thumb{width:56px;height:56px;background:#eee}
+
+/* gradient preview tiles (country / region pages) */
+.persocal-search__grad{display:block;width:64px;height:64px;flex:none}
+.sqs-search-preview-ui.persocal-preview .persocal-search__grad{width:56px;height:56px}
+/* destinations page: compact search under "Explore by regions | Search by country" */
+.persocal-search-section--destinations{padding:0 6vw clamp(40px,6vw,72px);background:transparent;position:relative}
+.persocal-search-section--destinations .persocal-search{position:relative;z-index:1}
+.persocal-search-section{display:block}
+.persocal-search-section--destinations .persocal-search{max-width:none;margin:0;width:100%}
+.persocal-search-section--destinations .persocal-search__box{max-width:720px}
+.persocal-search-section--destinations .persocal-search__results{max-width:720px}
+.persocal-search-section--destinations .persocal-search__hint{text-align:left}
