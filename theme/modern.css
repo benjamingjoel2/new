@@ -195,3 +195,21 @@ input[type="search"]{
 
 /* Tertiary (underlined text) buttons keep their straight underline */
 .sqs-button-element--tertiary,.gdpr-cookie-banner .manage{border-radius:0 !important;transform:none !important;box-shadow:none !important}
+
+/* ---------- Header: sticky, translucent, blurred ---------- */
+body:not(.header--menu-open) .header .header-announcement-bar-wrapper [data-header-style="gradient"].header-background-gradient{
+  background:color-mix(in srgb, var(--gradientHeaderBackgroundColor) 55%, transparent) !important;
+  -webkit-backdrop-filter:blur(18px) saturate(1.6);
+  backdrop-filter:blur(18px) saturate(1.6);
+  box-shadow:inset 0 -1px 0 rgba(127,127,127,.14);
+}
+body:not(.header--menu-open) .header .header-announcement-bar-wrapper [data-header-style="solid"].header-background-solid{
+  background:color-mix(in srgb, var(--solidHeaderBackgroundColor) 55%, transparent) !important;
+  -webkit-backdrop-filter:blur(18px) saturate(1.6);
+  backdrop-filter:blur(18px) saturate(1.6);
+  box-shadow:inset 0 -1px 0 rgba(127,127,127,.14);
+}
+@supports not (background:color-mix(in srgb, red 50%, transparent)){
+  body:not(.header--menu-open) .header .header-announcement-bar-wrapper .header-background-gradient,
+  body:not(.header--menu-open) .header .header-announcement-bar-wrapper .header-background-solid{opacity:.85}
+}
