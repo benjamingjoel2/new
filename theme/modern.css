@@ -222,3 +222,7 @@ input.enquiry-form__input,select.enquiry-form__input{border-radius:var(--pc-pill
 textarea.enquiry-form__input{border-radius:var(--pc-radius-md) !important;padding:1em 1.1em !important}
 .enquiry-form__input:focus{outline:none !important;box-shadow:var(--pc-ring)}
 .footer__currency .custom-select,.currency-switcher select{border-radius:var(--pc-pill) !important;padding-left:1em !important}
+
+/* ---------- Hover fills: keep them inside the pill ---------- */
+.sqs-button-element--primary,.sqs-button-element--secondary,.sqs-block-button-element,.list-item-content__button,.form-button-wrapper .button,.newsletter-form-button,.header-actions-action--cta .btn,.header-menu-cta a,.btn:not(.sqs-button-element--tertiary),.persocal-search__button,.sqs-cookie-banner-v2-accept,.enquiry-form__submit-input,.btn--solid{overflow:hidden !important;isolation:isolate}
+.sqs-button-element--primary::before,.sqs-button-element--primary::after,.sqs-button-element--secondary::before,.sqs-button-element--secondary::after,.sqs-block-button-element::before,.sqs-block-button-element::after,.list-item-content__button::before,.list-item-content__button::after,.form-button-wrapper .button::before,.form-button-wrapper .button::after,.newsletter-form-button::before,.newsletter-form-button::after,.header-actions-action--cta .btn::before,.header-actions-action--cta .btn::after,.btn::before,.btn::after,.btn--solid::before,.btn--solid::after{border-radius:var(--pc-pill) !important}
