@@ -2053,17 +2053,55 @@ button:focus {
       if (!field || field.type === 'hidden') return;
       var value = field.tagName === 'SELECT' ? ((field.options[field.selectedIndex] || {}).text || '') : field.value;
       var key = label.textContent.replace(/\*/g, '').trim();
-      if (String(value).trim()) data[key] = String(value).trim();
+      if (String(value).trim()) { data[key] = String(value).trim(); kinds[key] = field.tagName === 'SELECT' ? 'select' : field.tagName === 'TEXTAREA' ? 'textarea' : (field.type || 'text'); }
     });
     return data;
+  }
+  var kinds = {};
+  function pick(data, tests, allowedKinds) {
+    var keys = Object.keys(data);
+    for (var i = 0; i < tests.length; i++) for (var j = 0; j < keys.length; j++) {
+      if (!tests[i].test(keys[j])) continue;
+      if (allowedKinds && allowedKinds.indexOf(kinds[keys[j]] || 'text') < 0) continue;
+      var v = data[keys[j]]; delete data[keys[j]]; return v;
+    }
+    return '';
+  }
+  function niceDate(v) {
+    var m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(v || '');
+    if (!m) return v;
+    var months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+    return parseInt(m[3], 10) + ' ' + months[parseInt(m[2], 10) - 1] + ' ' + m[1];
+  }
+  function whatsappMessage(data) {
+    var d = {}; Object.keys(data).forEach(function (k) { d[k] = data[k]; });
+    var first = pick(d, [/first name/i]), last = pick(d, [/last name/i]), email = pick(d, [/^e-?mail/i]);
+    var about = pick(d, [/enquiry about/i, /inquiry about/i, /how can we help/i, /interested in/i], ['select', 'text']);
+    var where = pick(d, [/where/i, /destination/i]);
+    var when = niceDate(pick(d, [/when/i, /date/i]));
+    var people = pick(d, [/how many/i, /people/i, /travell?ers/i, /group/i]);
+    var notes = pick(d, [/tell us more/i, /comments/i, /requests/i, /message/i, /notes/i, /anything else/i, /how can we help/i, /./], ['textarea']);
+    var name = (first + ' ' + last).trim();
+    if (about && (about.length > 40 || about.split(/\s+/).length > 6)) { notes = notes ? about + ' ' + notes : about; about = ''; }
+    var topicName = topic === 'general' ? '' : topic.replace(/-/g, ' ').replace(/\b\w/g, function (c) { return c.toUpperCase(); });
+    var lines = ['Hi Persocal 👋 I\'d like to plan a trip' + (topicName ? ' (' + topicName + ')' : '') + '.', ''];
+    var core = [];
+    if (about) core.push('interested in *' + about + '*');
+    if (where) core.push((about ? 'in' : 'interested in') + ' *' + where + '*');
+    if (when) core.push('from *' + when + '*');
+    var s = name ? 'I\'m ' + name : 'I\'m';
+    if (core.length) s += (name ? ', and I\'m ' : ' ') + core.join(' ');
+    if (people) { var n = parseInt(people, 10); s += (core.length ? ', ' : (name ? ', ' : ' ')) + 'travelling as *' + people + '* ' + (n === 1 ? 'person' : 'people'); }
+    if (name || core.length || people) lines.push(s + '.');
+    Object.keys(d).forEach(function (k) { lines.push(k + ': ' + d[k]); });
+    if (notes) lines.push('', 'A bit more: ' + notes);
+    if (email) lines.push('', 'You can also reach me at ' + email + '.');
+    return lines.join('\n');
   }
   function whatsappUrl(data) {
     var number = String(window.PERSOCAL_WHATSAPP || '').replace(/\D/g, '');
     if (!number) return '';
-    var lines = ['Hi Persocal, new trip inquiry' + topicLabel + ':', ''];
-    Object.keys(data).forEach(function (k) { lines.push(k + ': ' + data[k]); });
-    lines.push('', 'Sent from ' + window.location.href);
-    return 'https://wa.me/' + number + '?text=' + encodeURIComponent(lines.join('\n'));
+    return 'https://wa.me/' + number + '?text=' + encodeURIComponent(whatsappMessage(data));
   }
   function mailtoUrl(data) {
     var lines = Object.keys(data).map(function (k) { return k + ': ' + data[k]; });
