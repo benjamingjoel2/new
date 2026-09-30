@@ -2052,7 +2052,7 @@ button:focus {
     var name = (first + ' ' + last).trim();
     if (about && (about.length > 40 || about.split(/\s+/).length > 6)) { notes = notes ? about + ' ' + notes : about; about = ''; }
     var topicName = topic === 'general' ? '' : topic.replace(/-/g, ' ').replace(/\b\w/g, function (c) { return c.toUpperCase(); });
-    var lines = ['Hi Persocal \u2708\uFE0F I\'d like to plan a trip' + (topicName ? ' (' + topicName + ')' : '') + '.', ''];
+    var lines = ['Hi Persocal, I\'d like to plan a trip' + (topicName ? ' (' + topicName + ')' : '') + '.', ''];
     var core = [];
     if (about) core.push('interested in *' + about + '*');
     if (where) core.push((about ? 'in' : 'interested in') + ' *' + where + '*');
