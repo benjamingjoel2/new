@@ -103,11 +103,12 @@
   function isRegion(e) { return e.s === 'Region' && e.u !== 'destination/'; }
   /* Every search on the site returns countries and regions only. */
   var PLACES_ONLY = { filter: function (e) { return isCountry(e) || isRegion(e); }, empty: 'No country or region matches “%s”. Try a country, a city or a continent.' };
-  var SCOPES = { destinations: PLACES_ONLY };
+  var PLACES_AND_INTERESTS = { filter: function (e) { return isCountry(e) || isRegion(e) || e.s === 'Interest'; }, empty: 'Nothing matches “%s”. Try a country, a city, a region or an interest like golf or safari.' };
+  var SCOPES = { destinations: PLACES_ONLY, home: PLACES_AND_INTERESTS };
 
   /* ---- Home page search band ---- */
   function initHomeSearch(root) {
-    var scope = SCOPES[root.getAttribute('data-scope')] || PLACES_ONLY;
+    var scope = SCOPES[root.getAttribute('data-scope')] || PLACES_AND_INTERESTS;
     var input = root.querySelector('.persocal-search__input');
     var list = root.querySelector('.persocal-search__results');
     var button = root.querySelector('.persocal-search__button');
@@ -149,7 +150,7 @@
     if (!box || !oldInput) return;
     var input = oldInput.cloneNode(true); // drops Squarespace's own listeners
     oldInput.parentNode.replaceChild(input, oldInput);
-    var filter = PLACES_ONLY.filter;
+    var filter = PLACES_AND_INTERESTS.filter;
     if (box.getAttribute('data-collectionfilter') === 'true') {
       var page = window.location.pathname;
       if (/\/safari/.test(page) || /safari/.test(document.title.toLowerCase())) {
