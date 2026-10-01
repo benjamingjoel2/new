@@ -199,16 +199,16 @@ input[type="search"]{
 
 /* ---------- Header: sticky, translucent, blurred ---------- */
 body:not(.header--menu-open) .header .header-announcement-bar-wrapper [data-header-style="gradient"].header-background-gradient{
-  background:color-mix(in srgb, var(--gradientHeaderBackgroundColor) 80%, transparent) !important;
+  background:transparent !important;
   -webkit-backdrop-filter:blur(18px) saturate(1.6);
   backdrop-filter:blur(18px) saturate(1.6);
-  box-shadow:inset 0 -1px 0 rgba(127,127,127,.14);
+  box-shadow:none;
 }
 body:not(.header--menu-open) .header .header-announcement-bar-wrapper [data-header-style="solid"].header-background-solid{
   background:color-mix(in srgb, var(--solidHeaderBackgroundColor) 55%, transparent) !important;
   -webkit-backdrop-filter:blur(18px) saturate(1.6);
   backdrop-filter:blur(18px) saturate(1.6);
-  box-shadow:inset 0 -1px 0 rgba(127,127,127,.14);
+  box-shadow:none;
 }
 @supports not (background:color-mix(in srgb, red 50%, transparent)){
   body:not(.header--menu-open) .header .header-announcement-bar-wrapper .header-background-gradient,
@@ -228,10 +228,3 @@ textarea.enquiry-form__input{border-radius:var(--pc-radius-md) !important;paddin
 .sqs-button-element--primary,.sqs-button-element--secondary,.sqs-block-button-element,.list-item-content__button,.form-button-wrapper .button,.newsletter-form-button,.header-actions-action--cta .btn,.header-menu-cta a,.btn:not(.sqs-button-element--tertiary),.persocal-search__button,.sqs-cookie-banner-v2-accept,.enquiry-form__submit-input,.btn--solid{overflow:hidden !important;isolation:isolate}
 .sqs-button-element--primary::before,.sqs-button-element--primary::after,.sqs-button-element--secondary::before,.sqs-button-element--secondary::after,.sqs-block-button-element::before,.sqs-block-button-element::after,.list-item-content__button::before,.list-item-content__button::after,.form-button-wrapper .button::before,.form-button-wrapper .button::after,.newsletter-form-button::before,.newsletter-form-button::after,.header-actions-action--cta .btn::before,.header-actions-action--cta .btn::after,.btn::before,.btn::after,.btn--solid::before,.btn--solid::after{border-radius:var(--pc-pill) !important}
 
-/* Phones: no dark band behind the logo and menu, just the glass blur */
-@media (max-width:768px){
-  body:not(.header--menu-open) .header .header-announcement-bar-wrapper [data-header-style="gradient"].header-background-gradient{
-    background:transparent !important;
-    box-shadow:none !important;
-  }
-}
