@@ -77,15 +77,14 @@
     return ROOT + e.u + (LINK_STYLE === 'file' ? 'index.html' : '');
   }
   function esc(s) { return String(s || '').replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
-  function thumb(e) {
-    if (e.g) return '<span class="persocal-search__thumb persocal-search__grad" aria-hidden="true" style="background:linear-gradient(120deg, ' + esc(e.g[1]) + ' 0%, ' + esc(e.g[0]) + ' 100%)"></span>';
-    if (e.i) return '<img class="persocal-search__thumb" src="' + esc(ROOT + ASSETS + '/' + e.i) + '?format=300w" alt="" loading="lazy">';
-    return '<span class="persocal-search__thumb persocal-search__thumb--empty" aria-hidden="true">' + esc((e.n || '?').charAt(0)) + '</span>';
+  function kindLabel(e) {
+    if (e.s !== 'Destination') return e.s;
+    if (/^destinations\/[^\/]+\/$/.test(e.u)) return 'Country';
+    return /\/experiences\//.test(e.u) ? 'Experience' : 'Place';
   }
-  function kindLabel(e) { return e.s === 'Destination' ? 'Country' : e.s; }
   function resultHTML(e, cls) {
     var desc = e._km ? e._km + ' \u00b7 ' + e.n : (e.d || e.t);
-    return '<a class="' + cls + '" href="' + esc(href(e)) + '">' + thumb(e) + '<span><span class="persocal-search__kind">' + esc(kindLabel(e)) + '</span><span class="persocal-search__name">' + esc(e.n && e.s !== 'Page' && e.s !== 'Home' ? e.n : e.t) + '</span><span class="persocal-search__desc">' + esc(desc) + '</span></span></a>';
+    return '<a class="' + cls + '" href="' + esc(href(e)) + '"><span><span class="persocal-search__kind">' + esc(kindLabel(e)) + '</span><span class="persocal-search__name">' + esc(e.n && e.s !== 'Page' && e.s !== 'Home' ? e.n : e.t) + '</span><span class="persocal-search__desc">' + esc(desc) + '</span></span></a>';
   }
   /* Destinations page: countries and regions only */
   function isCountry(e) { return e.s === 'Destination' && /^destinations\/[^\/]+\/$/.test(e.u); }
