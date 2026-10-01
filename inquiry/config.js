@@ -8,5 +8,5 @@
    from its endpoint (https://formspree.io/f/XXXXXXXX) and paste it here so
    every submission is also recorded and emailed, even if the visitor never
    sends the WhatsApp message. Leave empty to use WhatsApp only. */
-window.PERSOCAL_WHATSAPP = "351913320095";
+window.PERSOCAL_WHATSAPP = "971543697713";
 window.PERSOCAL_FORMSPREE_ID = "";
