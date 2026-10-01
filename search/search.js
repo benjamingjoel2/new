@@ -33,41 +33,53 @@
       if (ALIASES[w]) { sectionWanted = ALIASES[w]; return false; }
       return true;
     });
-    var out = [];
+    var cq = contentWords.join(' ');
+    var strong = [], weak = [];
     for (var i = 0; i < rows.length; i++) {
       var e = rows[i];
       if (filter && !filter(e)) continue;
-      var score = 0;
+      if (sectionWanted && e._s !== sectionWanted && !contentWords.length) continue;
       e._km = '';
-      for (var ki = 0; ki < e._k.length; ki++) {
-        var kw = e._k[ki];
-        if (kw === q) { score += 90; e._km = e.k[ki]; break; }
-        if (q.length >= 2 && kw.indexOf(q) === 0) { if (score < 55) { score += 55; e._km = e.k[ki]; } }
-        else if (q.length >= 3 && kw.indexOf(q) >= 0 && !e._km) { score += 30; e._km = e.k[ki]; }
+      var score = 0;
+      var isStrong = false;
+      if (cq) {
+        // the whole query against the page's own name, title and known places
+        if (e._n === cq || e._t === cq) { score += 100; isStrong = true; }
+        if (e._n.indexOf(cq) === 0 || e._t.indexOf(cq) === 0) { score += 60; isStrong = true; }
+        else if (e._n.indexOf(cq) >= 0 || e._t.indexOf(cq) >= 0) { score += 40; isStrong = true; }
+        for (var ki = 0; ki < e._k.length; ki++) {
+          var kw = e._k[ki];
+          var hitK = kw === cq ? 90 : (cq.length >= 2 && kw.indexOf(cq) === 0) ? 55 : (cq.length >= 3 && kw.indexOf(cq) >= 0) ? 30 : 0;
+          if (hitK) { score += hitK; isStrong = true; if (!e._km && e._n.indexOf(cq) < 0) e._km = e.k[ki]; if (kw === cq) break; }
+        }
+        // every word must appear somewhere; a name, title or place hit keeps the result strong
+        var all = true, weakOnly = false;
+        for (var j = 0; j < contentWords.length; j++) {
+          var w = contentWords[j], hit = 0;
+          if (e._n.indexOf(w) >= 0) hit = 18;
+          else if (e._t.indexOf(w) >= 0) hit = 14;
+          else { for (var kj = 0; kj < e._k.length; kj++) if (e._k[kj].indexOf(w) >= 0) { hit = 16; break; } }
+          if (!hit) {
+            if (e._d.indexOf(w) >= 0) hit = 7;
+            else if (e._h.indexOf(w) >= 0) hit = 5;
+            else if (e._x.indexOf(w) >= 0) hit = 3;
+            if (hit) weakOnly = true;
+          }
+          if (!hit) { all = false; break; }
+          score += hit;
+        }
+        if (!all) continue;
+        if (!isStrong && weakOnly) isStrong = false; else if (!weakOnly) isStrong = true;
+      } else {
+        isStrong = true; score = 1;
       }
-      if (e._n === q || e._t === q) score += 100;
-      if (e._n.indexOf(q) === 0 || e._t.indexOf(q) === 0) score += 60;
-      if (e._n.indexOf(q) >= 0) score += 40;
-      if (e._t.indexOf(q) >= 0) score += 30;
       if (sectionWanted && e._s === sectionWanted) score += 25;
-      var all = true;
-      for (var j = 0; j < contentWords.length; j++) {
-        var w = contentWords[j], hit = 0;
-        if (e._n.indexOf(w) >= 0) hit = 18;
-        else if (e._t.indexOf(w) >= 0) hit = 14;
-        else if (e._h.indexOf(w) >= 0) hit = 9;
-        else if (e._d.indexOf(w) >= 0) hit = 7;
-        else if (e._x.indexOf(w) >= 0) hit = 3;
-        if (!hit) for (var kj = 0; kj < e._k.length; kj++) if (e._k[kj].indexOf(w) >= 0) { hit = 16; if (!e._km) e._km = e.k[kj]; break; }
-        if (!hit) { all = false; break; }
-        score += hit;
-      }
-      if (!all && contentWords.length) continue;
-      if (!contentWords.length && sectionWanted && e._s !== sectionWanted) continue;
       if (score <= 0) continue;
       score -= Math.min(e._n.length, 40) / 40; // shorter, more exact names first
-      out.push({ e: e, score: score });
+      (isStrong ? strong : weak).push({ e: e, score: score });
     }
+    // only fall back to body-text matches when nothing is named after the query
+    var out = strong.length ? strong : weak;
     out.sort(function (a, b) { return b.score - a.score; });
     return out.slice(0, 12).map(function (r) { return r.e; });
   }
