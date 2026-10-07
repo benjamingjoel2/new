@@ -45,7 +45,8 @@ html.pc-drawer-lock,html.pc-drawer-lock body{overflow:hidden!important}';
   function resolve(url) {
     // a generic inquiry link (header button, "start planning") on a country or interest page opens that page's own form
     if (CONTEXT && isGeneric(url)) return CONTEXT;
-    if (/\/start\/?(index\.html)?$/.test(new URL(url, location.href).pathname)) return new URL(url, location.href).href.replace(/start\/?(index\.html)?$/, 'inquiry/');
+    // with no page context (home, about, ...) the "start" links go to the Start page itself, as on the original site
+    if (/\/start\/?(index\.html)?$/.test(new URL(url, location.href).pathname)) return null;
     return url;
   }
   function open(url) {
@@ -88,8 +89,10 @@ html.pc-drawer-lock,html.pc-drawer-lock body{overflow:hidden!important}';
     var a = ev.target.closest && ev.target.closest('a[href]');
     if (!a || a.hasAttribute('download')) return;
     if (!isInquiry(a.href)) return;
+    var target = resolve(a.href);
+    if (!target) return; // plain navigation
     ev.preventDefault();
-    open(resolve(a.href));
+    open(target);
   }, true);
   window.addEventListener('message', function (ev) { if (ev.origin === location.origin && ev.data === 'persocal:close-inquiry') close(); });
   window.PersocalInquiry = { open: open, close: close };
