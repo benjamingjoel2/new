@@ -54,7 +54,6 @@ def lastmods():
     return out
 
 def main():
-    mods = lastmods()
     urls = []
     for rel in page_dirs():
         top = rel.split('/')[0] if rel else ''
@@ -62,11 +61,10 @@ def main():
         if not canonical_self(rel): continue
         urls.append(rel)
     urls.sort(key=lambda r: (r != '', r))
-    today = datetime.date.today().isoformat()
     lines = ['<?xml version="1.0" encoding="UTF-8"?>', '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">']
     for rel in urls:
         loc = SITE + (rel + '/' if rel else '')
-        lines.append('  <url><loc>%s</loc><lastmod>%s</lastmod></url>' % (html.escape(loc, quote=True), mods.get(rel, today)))
+        lines.append('  <url><loc>%s</loc></url>' % html.escape(loc, quote=True))
     lines.append('</urlset>')
     open(os.path.join(ROOT, 'sitemap.xml'), 'w', encoding='utf-8').write('\n'.join(lines) + '\n')
     open(os.path.join(ROOT, 'robots.txt'), 'w', encoding='utf-8').write('User-agent: *\nAllow: /\n\nSitemap: %ssitemap.xml\n' % SITE)
