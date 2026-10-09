@@ -7,11 +7,6 @@
       "permanent": true
     },
     {
-      "source": "/regions/antarctica{/}?",
-      "destination": "/destination/antarctica/",
-      "permanent": true
-    },
-    {
       "source": "/explore{/}?",
       "destination": "/destination/",
       "permanent": true
@@ -124,6 +119,31 @@
     {
       "source": "/inquiry/angola{/}?",
       "destination": "/inquiry/?to=Angola",
+      "permanent": true
+    },
+    {
+      "source": "/regions/:region(africa|antarctica|asia|australia\\-oceania|europe|north\\-america|south\\-america){/}?",
+      "destination": "/destination/:region/",
+      "permanent": true
+    },
+    {
+      "source": "/destinations/:region(africa|antarctica|asia|australia\\-oceania|europe|north\\-america|south\\-america){/}?",
+      "destination": "/destination/:region/",
+      "permanent": true
+    },
+    {
+      "source": "/destination/:slug((?!(?:africa|antarctica|asia|australia\\-oceania|europe|north\\-america|south\\-america)(?:/|$))[^/]+)/:rest*",
+      "destination": "/destinations/:slug/:rest*",
+      "permanent": true
+    },
+    {
+      "source": "/occassions/:path*",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/occasions/:path*",
+      "destination": "/",
       "permanent": true
     }
   ],
