@@ -1,0 +1,141 @@
+{
+  "trailingSlash": true,
+  "redirects": [
+    {
+      "source": "/regions{/}?",
+      "destination": "/destination/",
+      "permanent": true
+    },
+    {
+      "source": "/regions/antarctica{/}?",
+      "destination": "/destination/antarctica/",
+      "permanent": true
+    },
+    {
+      "source": "/explore{/}?",
+      "destination": "/destination/",
+      "permanent": true
+    },
+    {
+      "source": "/home{/}?",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/dropdown-about{/}?",
+      "destination": "/about/",
+      "permanent": true
+    },
+    {
+      "source": "/search{/}?",
+      "destination": "/searchbox/",
+      "permanent": true
+    },
+    {
+      "source": "/golf{/}?",
+      "destination": "/collection/golf/",
+      "permanent": true
+    },
+    {
+      "source": "/benin{/}?",
+      "destination": "/destinations/benin/",
+      "permanent": true
+    },
+    {
+      "source": "/benin/experiences{/}?",
+      "destination": "/destinations/benin/experiences/",
+      "permanent": true
+    },
+    {
+      "source": "/benin/destinations{/}?",
+      "destination": "/destinations/benin/destinations/",
+      "permanent": true
+    },
+    {
+      "source": "/mongolia{/}?",
+      "destination": "/destinations/mongolia/",
+      "permanent": true
+    },
+    {
+      "source": "/togo{/}?",
+      "destination": "/destinations/togo/",
+      "permanent": true
+    },
+    {
+      "source": "/jamaica{/}?",
+      "destination": "/destinations/jamaica/",
+      "permanent": true
+    },
+    {
+      "source": "/india{/}?",
+      "destination": "/destinations/india/",
+      "permanent": true
+    },
+    {
+      "source": "/destinations/costa-rica{/}?",
+      "destination": "/destinations/costarica/",
+      "permanent": true
+    },
+    {
+      "source": "/destinations/korea{/}?",
+      "destination": "/destinations/southkorea/",
+      "permanent": true
+    },
+    {
+      "source": "/destinations/sri-lanka{/}?",
+      "destination": "/destinations/srilanka/",
+      "permanent": true
+    },
+    {
+      "source": "/destinations/mauritius{/}?",
+      "destination": "/destination/africa/",
+      "permanent": true
+    },
+    {
+      "source": "/newsroom/bondi-beach-sydney-lifestyle-persocal{/}?",
+      "destination": "/newsroom/",
+      "permanent": true
+    },
+    {
+      "source": "/log-in{/}?",
+      "destination": "https://booking.persocal.com/log-in",
+      "permanent": true
+    },
+    {
+      "source": "/inquiry/albania{/}?",
+      "destination": "/inquiry/?to=Albania",
+      "permanent": true
+    },
+    {
+      "source": "/inquiry/algeria{/}?",
+      "destination": "/inquiry/?to=Algeria",
+      "permanent": true
+    },
+    {
+      "source": "/inquiry/andorra{/}?",
+      "destination": "/inquiry/?to=Andorra",
+      "permanent": true
+    },
+    {
+      "source": "/inquiry/antarctica{/}?",
+      "destination": "/inquiry/?to=Antarctica",
+      "permanent": true
+    },
+    {
+      "source": "/inquiry/angola{/}?",
+      "destination": "/inquiry/?to=Angola",
+      "permanent": true
+    }
+  ],
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        {
+          "key": "X-Content-Type-Options",
+          "value": "nosniff"
+        }
+      ]
+    }
+  ]
+}

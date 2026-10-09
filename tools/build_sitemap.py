@@ -14,7 +14,8 @@ SITE = 'https://www.persocal.com/'
 ROOT = os.path.abspath(sys.argv[1] if len(sys.argv) > 1 else '.')
 SKIP_DIRS = {'.git', '.github', '_assets', 'search', 'theme', 'tools', 'node_modules'}
 SKIP_PAGES = {'cart', 'searchbox', 'search', 'login', 'log-in', '404'}
-SKIP_PREFIXES = ('newsroom/category/', 'newsroom/tag/')
+SKIP_PREFIXES = ('newsroom/category/', 'newsroom/tag/', 'safari/parks/tag/')
+NOINDEX_RE = re.compile(r'<meta\s+name="robots"\s+content="[^"]*noindex', re.I)
 
 def page_dirs():
     for d, dirs, files in os.walk(ROOT):
@@ -25,6 +26,7 @@ def page_dirs():
 def canonical_self(rel):
     path = os.path.join(ROOT, rel, 'index.html') if rel else os.path.join(ROOT, 'index.html')
     h = open(path, encoding='utf-8', errors='replace').read(200000)
+    if NOINDEX_RE.search(h): return False        # hidden from search engines on purpose
     m = re.search(r'<link[^>]+rel="canonical"[^>]+href="([^"]*)"', h) or re.search(r'<link[^>]+href="([^"]*)"[^>]+rel="canonical"', h)
     if not m: return True                       # no canonical: treat as its own page
     href = html.unescape(m.group(1))
