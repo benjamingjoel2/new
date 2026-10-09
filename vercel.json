@@ -83,7 +83,7 @@
     },
     {
       "source": "/destinations/mauritius{/}?",
-      "destination": "/destination/africa/",
+      "destination": "/persocal/",
       "permanent": true
     },
     {
