@@ -122,27 +122,42 @@
       "permanent": true
     },
     {
-      "source": "/regions/:region(africa|antarctica|asia|australia\\-oceania|europe|north\\-america|south\\-america){/}?",
+      "source": "/regions/:region(africa|antarctica|asia|australia-oceania|europe|north-america|south-america){/}?",
       "destination": "/destination/:region/",
       "permanent": true
     },
     {
-      "source": "/destinations/:region(africa|antarctica|asia|australia\\-oceania|europe|north\\-america|south\\-america){/}?",
+      "source": "/destinations/:region(africa|antarctica|asia|australia-oceania|europe|north-america|south-america){/}?",
       "destination": "/destination/:region/",
       "permanent": true
     },
     {
-      "source": "/destination/:slug((?!(?:africa|antarctica|asia|australia\\-oceania|europe|north\\-america|south\\-america)(?:/|$))[^/]+)/:rest*",
-      "destination": "/destinations/:slug/:rest*",
+      "source": "/destination/:slug(albania|algeria|andorra|angola|antiguabarbuda|argentina|armenia|aruba|australia|austria|azerbaijan|bahamas|bahrain|barbados|belarus|belgium|belize|benin|bhutan|bolivia|bosnia|botswana|brazil|brunei|bulgaria|caboverde|cambodia|canada|chad|chile|china|colombia|congo|costarica|croatia|cuba|curacao|cyprus|czechia|denmark|dominicana|drcongo|ecuador|egypt|elsalvador|estonia|ethiopia|faroeislands|fiji|finland|france|frenchpolynesia|gabon|georgia|germany|ghana|greece|guatemala|honduras|hongkong|hungary|iceland|india|indonesia|iran|ireland|italy|jamaica|japan|jordan|kazakhstan|kenya|kuwait|kyrgyzstan|laos|latvia|lebanon|lesotho|liechtenstein|lithuania|luxembourg|macau|madagascar|malawi|malaysia|maldives|mali|malta|martinique|mexico|moldova|monaco|mongolia|montenegro|morocco|mozambique|myanmar|namibia|nepal|netherlands|newzealand|nicaragua|nigeria|norway|oman|pakistan|palau|panama|papuanewguinea|paraguay|peru|philippines|poland|portugal|puertorico|qatar|romania|russia|rwanda|samoa|sanmarino|saotome|saudiarabia|senegal|serbia|seychelles|sierraleone|singapore|slovakia|slovenia|solomonislands|southafrica|southkorea|spain|srilanka|stkittsnevis|stlucia|svg|sweden|switzerland|taiwan|tanzania|thailand|timorleste|togo|tunisia|turkey|turkscaicos|tuvalu|uae|uganda|unitedkingdom|uruguay|usa|uzbekistan|vanuatu|vietnam|westernsahara|yemen|zambia|zimbabwe){/}?",
+      "destination": "/destinations/:slug/",
       "permanent": true
     },
     {
-      "source": "/occassions/:path*",
+      "source": "/destination/:slug(albania|algeria|andorra|angola|antiguabarbuda|argentina|armenia|aruba|australia|austria|azerbaijan|bahamas|bahrain|barbados|belarus|belgium|belize|benin|bhutan|bolivia|bosnia|botswana|brazil|brunei|bulgaria|caboverde|cambodia|canada|chad|chile|china|colombia|congo|costarica|croatia|cuba|curacao|cyprus|czechia|denmark|dominicana|drcongo|ecuador|egypt|elsalvador|estonia|ethiopia|faroeislands|fiji|finland|france|frenchpolynesia|gabon|georgia|germany|ghana|greece|guatemala|honduras|hongkong|hungary|iceland|india|indonesia|iran|ireland|italy|jamaica|japan|jordan|kazakhstan|kenya|kuwait|kyrgyzstan|laos|latvia|lebanon|lesotho|liechtenstein|lithuania|luxembourg|macau|madagascar|malawi|malaysia|maldives|mali|malta|martinique|mexico|moldova|monaco|mongolia|montenegro|morocco|mozambique|myanmar|namibia|nepal|netherlands|newzealand|nicaragua|nigeria|norway|oman|pakistan|palau|panama|papuanewguinea|paraguay|peru|philippines|poland|portugal|puertorico|qatar|romania|russia|rwanda|samoa|sanmarino|saotome|saudiarabia|senegal|serbia|seychelles|sierraleone|singapore|slovakia|slovenia|solomonislands|southafrica|southkorea|spain|srilanka|stkittsnevis|stlucia|svg|sweden|switzerland|taiwan|tanzania|thailand|timorleste|togo|tunisia|turkey|turkscaicos|tuvalu|uae|uganda|unitedkingdom|uruguay|usa|uzbekistan|vanuatu|vietnam|westernsahara|yemen|zambia|zimbabwe)/:rest+{/}?",
+      "destination": "/destinations/:slug/:rest+/",
+      "permanent": true
+    },
+    {
+      "source": "/occassions{/}?",
       "destination": "/",
       "permanent": true
     },
     {
-      "source": "/occasions/:path*",
+      "source": "/occassions/:path+{/}?",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/occasions{/}?",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/occasions/:path+{/}?",
       "destination": "/",
       "permanent": true
     }
