@@ -232,3 +232,10 @@ textarea.enquiry-form__input{border-radius:var(--pc-radius-md) !important;paddin
 /* The accessibility skip link must stay out of the layout flow (the button rules above gave it position:relative). */
 .header-skip-link{position:absolute !important;top:0;left:0;transform:translateY(-200%);}
 .header-skip-link:focus{transform:none;z-index:1000}
+
+/* Cookie banner: "Decline all" looks exactly like "Accept all", so refusing is as easy as agreeing,
+   and the three buttons wrap instead of running off the right edge on phones. */
+.gdpr-cookie-banner .sqs-cookie-banner-v2-cta-container{display:flex !important;flex-wrap:wrap !important;gap:8px !important}
+.gdpr-cookie-banner .sqs-cookie-banner-v2-cta-container button{margin:0 !important;max-width:100%}
+.gdpr-cookie-banner .sqs-cookie-banner-v2-accept,
+.gdpr-cookie-banner .sqs-cookie-banner-v2-deny{background:#000 !important;color:#fff !important;border:1px solid #000 !important}
